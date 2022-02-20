@@ -22,7 +22,7 @@ startButton.addEventListener('click', () => {
 const phrases = [ 
     ['The sky is blue'],
     ['My tea is hot'],
-    ['Apple juice'],
+    ['Orange juice'],
     ['The grass is green'],
     ['Go on a hike']
 ];
@@ -48,6 +48,7 @@ function addPhraseToDisplay(arr) {
     for (let i = 0; i < arr.length; i++) {
         var li = document.createElement('li');
         li.textContent = arr[i];
+        li.style.transition = 'width 2s, height 2s, background-color 1s, transform 2s'
         ul.appendChild(li);
         if (li.textContent === ' ') {
             li.className += 'space ';
