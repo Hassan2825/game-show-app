@@ -16,10 +16,10 @@ startButton.addEventListener('click', () => {
 
 // CREATE AN ARRAY
 const phrases = [ 
-    ['The sky is blue'],
-    ['My tea is hot'],
-    ['I love javascript'],
-    ['I enjoy hikes']
+    ['the sky is blue'],
+    ['my tea is hot'],
+    ['apple juice'],
+    ['the grass is green']
 ];
 
 
@@ -27,7 +27,6 @@ const phrases = [
 // RETURN A RANDOM PHRASE FROM AN ARRAY
 function getRandomPhraseAsArray(arr) {
     const randomNumber = Math.floor(Math.random() * arr.length)
-    
     for (let i = randomNumber; i < randomNumber + 1; i++) {
         for (let j = 0; j < arr[i].length; j++) {
             var myChar = (arr[i][j].split(''));
@@ -46,9 +45,9 @@ function addPhraseToDisplay(arr) {
         li.textContent = arr[i];
         ul.appendChild(li);
         if (li.textContent === ' ') {
-            li.className = 'space';
+            li.className += 'space ';
         } else {
-            li.className = 'letter';
+            li.className += 'letter ';
         }  
     }
 };
@@ -63,52 +62,42 @@ function checkLetter(button) {
     for (let i = 0; i < li.length; i++) {
         if (button.textContent === li[i].textContent) {
             li[i].className += 'show';
-            button.textContent = match;
-            console.log(match);
-        } else {
-            console.log('not working');
-        }
+            match = button.textContent;
+        } 
     }
     return match
 };
 
 
 
-// LISTEN TO THE KEYBOARD
+//LISTEN TO THE KEYBOARD
 qwerty.addEventListener('click', (e) => {
-    
     if (e.target.tagName === 'BUTTON' && e.target.className != 'chosen') {
-        var button = e.target;
-        button.className = 'chosen';
+        const button = e.target;
+        button.className = 'chosen ';
         const letterFound = checkLetter(button);
-    } else if (e.target.tagName === 'BUTTON' && e.target.className === 'chosen'){
-        document.querySelector('img').remove();
-        missed += 1;
-    }
+        if (!letterFound || e.target.className === 'chosen') {
+            const liveHeart = document.getElementsByClassName('tries')[0];
+            liveHeart.remove();
+            missed += 1;
+        }
+    }   
+    checkWin()
 });
 
 
 
-// CHECK IF WIN OR LOSE GAME
+//CHECK IF WIN OR LOSE GAME
 function checkWin() {
-    if (li.className === 'letter') {
-        isLetter.append(li);
-    } else if (li.className === 'show'){
-        isShow.append(li);
-    };
 
-    if (isShow.length === isLetter.length) {
-        const overlay = document.getElementById(overlay);
-        overlay.className += 'win';
+    const isLetter = document.getElementsByClassName('letter');
+    const isShow = document.getElementsByClassName('show');
+    const overlay = document.getElementById('overlay');
+    if (isLetter.length === isShow.length) {
+        overlay.className += ' win '
         overlay.style.display = 'flex';
     } else if (missed > 4) {
-        const overlay = document.getElementById(overlay);
-        overlay.className += 'lose';
-        overlay.h2.textContent = 'You Lose!';
+        overlay.className += ' lose';
         overlay.style.display = 'flex';
     }
 };
-
-
-
-
