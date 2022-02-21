@@ -1,19 +1,15 @@
 const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const startButton = document.querySelector('.btn__reset');
-const ul = document.querySelector('ul');
+var ul = document.querySelector('ul');
 const overlay = document.getElementById('overlay');
 var missed = 0;
 
 
 // LISTEN FOR THE GAME TO BEGIN
 startButton.addEventListener('click', () => {
-    if (startButton.textContent != 'Start Game') {
-        location.reload();
-    } else {
         const overlay_start = document.getElementById('overlay');
         overlay_start.style.display = 'none';
-    }
 });
 
 
@@ -39,7 +35,7 @@ function getRandomPhraseAsArray(arr) {
     }
     return myChar;
 }
-const phraseArray = getRandomPhraseAsArray(phrases);
+var phraseArray = getRandomPhraseAsArray(phrases);
 
 
 
@@ -111,10 +107,30 @@ function checkWin() {
         overlay.style.display = 'flex';
         h2.textContent = 'You Win!'
         startButton.textContent = 'Play again';
+        clearTheGame()
     } else if (missed > 4) {
         overlay.className += ' lose';
         overlay.style.display = 'flex';
         h2.textContent = 'You Lose!'
         startButton.textContent = 'Try again';
+        clearTheGame()   
     }
+};
+
+
+
+//RESTART THE GAME
+function clearTheGame() {
+    const resetButton = document.createElement('button');
+    resetButton.type = 'button';
+    resetButton.textContent = 'Play again';
+    resetButton.className = 'btn__reset';
+    console.log(resetButton.type);
+
+    overlay.insertBefore(resetButton, startButton);
+    startButton.remove();
+
+    resetButton.addEventListener('click', (e) => {
+        location.reload();
+    });
 };
