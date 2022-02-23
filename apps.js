@@ -3,7 +3,17 @@ const phrase = document.getElementById('phrase');
 const startButton = document.querySelector('.btn__reset');
 var ul = document.querySelector('ul');
 const overlay = document.getElementById('overlay');
+const ol = document.querySelector('ol');
 var missed = 0;
+
+
+
+//RESET BUTTON
+const resetButton = document.createElement('button');
+resetButton.type = 'button';
+resetButton.textContent = 'Play againn';
+resetButton.className = 'btn__reset';
+
 
 
 // LISTEN FOR THE GAME TO BEGIN
@@ -80,7 +90,6 @@ qwerty.addEventListener('click', (e) => {
         const letterFound = checkLetter(button);
         button.disabled = 'true';
         if (!letterFound || e.target.className === 'chosen') {
-            const ol = document.querySelector('ol');
             const olChild = ol.firstChild
             const liveHeart = document.getElementsByClassName('tries')[0];
             var imgLost = document.createElement('img');
@@ -112,7 +121,7 @@ function checkWin() {
         overlay.className += ' lose';
         overlay.style.display = 'flex';
         h2.textContent = 'You Lose!'
-        startButton.textContent = 'Try again';
+        startButton.textContent = 'Try again'; 
         clearTheGame()   
     }
 };
@@ -121,16 +130,36 @@ function checkWin() {
 
 //RESTART THE GAME
 function clearTheGame() {
-    const resetButton = document.createElement('button');
-    resetButton.type = 'button';
-    resetButton.textContent = 'Play again';
-    resetButton.className = 'btn__reset';
-    console.log(resetButton.type);
+    ul.textContent = "";
+    missed = 0;
 
+    const keyrows = document.getElementsByTagName('button');
+    for (let i = 0; i < keyrows.length; i++) {
+        let lisItem  = keyrows[i];
+        if (lisItem.className === 'chosen ') {
+            lisItem.classList.remove('chosen');
+            lisItem.disabled = false;
+        }
+    };
+
+    //change all lostHeart.png back into liveHeart.png
+    const newLife = document.createElement('img');
+    newLife.src = 'images/lostHeart.png';
+    newLife.style.width = '30px';
+    newLife.style.height = '35px';
+
+    for (let i = 0; i < 3; i++) {
+        let child = ol.children;
+        child[i].remove();
+    }
+};
+
+
+
+// LISTEN FOR RESET BUTTON
+resetButton.addEventListener('click', (e) => {
+    clearTheGame();
+    addPhraseToDisplay(phraseArray);
     overlay.insertBefore(resetButton, startButton);
     startButton.remove();
-
-    resetButton.addEventListener('click', (e) => {
-        location.reload();
-    });
-};
+});
