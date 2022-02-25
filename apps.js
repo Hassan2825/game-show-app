@@ -54,12 +54,11 @@ function addPhraseToDisplay(arr) {
     for (let i = 0; i < arr.length; i++) {
         var li = document.createElement('li');
         li.textContent = arr[i];
-        li.style.transition = 'width 2s, height 2s, background-color 1s, transform 2s'
         ul.appendChild(li);
         if (li.textContent === ' ') {
-            li.className += 'space ';
+            li.className = 'space';
         } else {
-            li.className += 'letter ';
+            li.className = 'letter';
         }  
     }
 };
@@ -73,7 +72,8 @@ function checkLetter(button) {
     var match = null;
     for (let i = 0; i < li.length; i++) {
         if (button.textContent === li[i].textContent.toLowerCase()) {
-            li[i].className += 'show';
+            li[i].style.transition = 'width 2s, height 2s, background-color 1s, transform 2s'
+            li[i].classList.add("show")
             match = button.textContent;
         } 
     }
