@@ -1,7 +1,7 @@
 const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const startButton = document.querySelector('.btn__reset');
-var ul = document.querySelector('ul');
+var ul = phrase.querySelector('ul');
 const overlay = document.getElementById('overlay');
 const ol = document.querySelector('ol');
 var missed = 0;
@@ -11,7 +11,7 @@ var missed = 0;
 //RESET BUTTON
 const resetButton = document.createElement('button');
 resetButton.type = 'button';
-resetButton.textContent = 'Play againn';
+resetButton.textContent = 'PLAY AGAIN';
 resetButton.className = 'btn__reset';
 
 
@@ -37,7 +37,7 @@ const phrases = [
 
 // RETURN A RANDOM PHRASE FROM AN ARRAY
 function getRandomPhraseAsArray(arr) {
-    const randomNumber = Math.floor(Math.random() * arr.length)
+    let randomNumber = Math.floor(Math.random() * arr.length)
     for (let i = randomNumber; i < randomNumber + 1; i++) {
         for (let j = 0; j < arr[i].length; j++) {
             var myChar = (arr[i][j].split(''));
@@ -45,7 +45,7 @@ function getRandomPhraseAsArray(arr) {
     }
     return myChar;
 }
-var phraseArray = getRandomPhraseAsArray(phrases);
+const phraseArray = getRandomPhraseAsArray(phrases);
 
 
 
@@ -90,15 +90,10 @@ qwerty.addEventListener('click', (e) => {
         const letterFound = checkLetter(button);
         button.disabled = 'true';
         if (!letterFound || e.target.className === 'chosen') {
-            const olChild = ol.firstChild
-            const liveHeart = document.getElementsByClassName('tries')[0];
-            var imgLost = document.createElement('img');
-            imgLost.src = 'images/lostHeart.png';
-            imgLost.style.width = '30px';
-            imgLost.style.height = '35px';
-            ol.insertBefore(imgLost, liveHeart);
-            liveHeart.remove();
-            missed += 1;
+                const lostLife = 0 + missed
+                const lives = document.querySelectorAll('.tries img')[lostLife]
+                lives.src = 'images/lostHeart.png';
+                missed += 1;
         }
         checkWin()
     }   
@@ -116,13 +111,15 @@ function checkWin() {
         overlay.style.display = 'flex';
         h2.textContent = 'You Win!'
         startButton.textContent = 'Play again';
-        clearTheGame()
+        overlay.insertBefore(resetButton, startButton);
+        startButton.style.display = 'none';
     } else if (missed > 4) {
         overlay.className += ' lose';
         overlay.style.display = 'flex';
         h2.textContent = 'You Lose!'
-        startButton.textContent = 'Try again'; 
-        clearTheGame()   
+        startButton.textContent = 'Try again';
+        overlay.insertBefore(resetButton, startButton);
+        startButton.style.display = 'none';
     }
 };
 
@@ -132,6 +129,7 @@ function checkWin() {
 function clearTheGame() {
     ul.textContent = "";
     missed = 0;
+    overlay.classList = "start"
 
     const keyrows = document.getElementsByTagName('button');
     for (let i = 0; i < keyrows.length; i++) {
@@ -142,24 +140,19 @@ function clearTheGame() {
         }
     };
 
-    //change all lostHeart.png back into liveHeart.png
-    const newLife = document.createElement('img');
-    newLife.src = 'images/lostHeart.png';
-    newLife.style.width = '30px';
-    newLife.style.height = '35px';
-
-    for (let i = 0; i < 3; i++) {
-        let child = ol.children;
-        child[i].remove();
+    for (let i = 0; i < 5; i++) {
+        const lives = document.querySelectorAll('.tries img')[i]
+        lives.src = 'images/liveHeart.png';
     }
 };
 
 
 
 // LISTEN FOR RESET BUTTON
-resetButton.addEventListener('click', (e) => {
+resetButton.addEventListener('click', () => {
+    const overlay_start = document.getElementById('overlay');
+    overlay_start.style.display = 'none';
     clearTheGame();
+    const phraseArray = getRandomPhraseAsArray(phrases);
     addPhraseToDisplay(phraseArray);
-    overlay.insertBefore(resetButton, startButton);
-    startButton.remove();
 });
